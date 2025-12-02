@@ -1,0 +1,251 @@
+:root {
+    --bg-color: #0f0f12;
+    --card-bg: #ffffff;
+    --primary: #3b82f6;
+    --accent: #ef4444;
+    --gold: #f59e0b;
+    --text-dark: #1f2937;
+    --text-light: #9ca3af;
+    --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono: "Courier New", Courier, monospace;
+    --handwriting: "Comic Sans MS", "Chalkboard SE", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-color);
+    color: var(--text-dark);
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* --- BACKGROUND FX --- */
+#canvas-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -1;
+    background: radial-gradient(circle at center, #1a1a2e 0%, #000000 100%);
+}
+
+/* --- LOGIN GATE --- */
+#gate {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #000;
+    color: #0f0;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--font-mono);
+    transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
+}
+#gate.unlocked { transform: translateY(-100%); }
+
+.gate-content { text-align: center; max-width: 400px; }
+.gate-logo { font-size: 3rem; margin-bottom: 2rem; text-shadow: 0 0 10px #0f0; }
+.gate-input { 
+    background: transparent; border: 2px solid #0f0; 
+    color: #0f0; padding: 10px; font-family: inherit; 
+    font-size: 1.2rem; width: 100%; text-align: center; text-transform: uppercase;
+    outline: none; margin-bottom: 20px;
+}
+.gate-hint { color: #555; font-size: 0.8rem; margin-top: 20px; }
+.access-btn {
+    background: #0f0; color: #000; border: none;
+    padding: 10px 30px; font-weight: bold; cursor: pointer;
+    font-family: inherit; font-size: 1rem;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+}
+.access-btn:hover { background: #fff; box-shadow: 0 0 25px #fff; }
+
+/* --- HEADER --- */
+header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 3px solid var(--accent);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.brand { font-weight: 900; letter-spacing: 2px; display: flex; align-items: center; gap: 10px; }
+.brand span { color: var(--accent); }
+
+/* --- TOGGLE SWITCH --- */
+.toggle-container { display: flex; align-items: center; gap: 10px; }
+.toggle-label { font-size: 0.8rem; font-weight: bold; color: #333; }
+.switch {
+    position: relative; display: inline-block; width: 50px; height: 26px;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+    position: absolute; cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc; transition: .4s; border-radius: 34px;
+}
+.slider:before {
+    position: absolute; content: "";
+    height: 18px; width: 18px; left: 4px; bottom: 4px;
+    background-color: white; transition: .4s; border-radius: 50%;
+}
+input:checked + .slider { background-color: var(--primary); }
+input:checked + .slider:before { transform: translateX(24px); }
+
+/* --- CONTAINER --- */
+.container { max-width: 900px; margin: 4rem auto; padding: 0 1rem; position: relative; z-index: 1; }
+
+/* --- INTRO CARD --- */
+.intro {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2rem; border-radius: 4px; margin-bottom: 3rem;
+    border-left: 5px solid var(--accent);
+    transform: skewX(-2deg);
+}
+.instruction-text { color: var(--accent); font-family: var(--font-mono); font-size: 0.9rem; }
+
+/* --- DOCUMENTS --- */
+.doc-card {
+    background: var(--card-bg);
+    border-radius: 2px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    margin-bottom: 5rem;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+.doc-header {
+    padding: 0.8rem 1.5rem; background: #f3f4f6;
+    border-bottom: 1px solid #d1d5db;
+    display: flex; justify-content: space-between;
+    font-family: var(--font-mono); font-size: 0.8rem; color: #6b7280;
+}
+.doc-content { padding: 3rem; position: relative; }
+
+/* --- ANNOTATIONS (HERMES MODE) --- */
+.sticky-note {
+    position: absolute;
+    background: #fef3c7;
+    color: #b45309;
+    font-family: var(--handwriting);
+    padding: 15px;
+    width: 220px;
+    box-shadow: 4px 6px 12px rgba(0,0,0,0.25);
+    font-size: 0.9rem;
+    line-height: 1.3;
+    transform: rotate(-2deg);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 50;
+    border-bottom-right-radius: 30px;
+}
+
+/* Individual Note Positioning */
+.note-1 { top: 20px; right: -20px; transform: rotate(3deg); }
+.note-2 { bottom: 40px; left: -30px; transform: rotate(-5deg); }
+.note-3 { top: 60%; right: -40px; }
+.note-4 { top: 250px; right: 10px; }
+.note-5 { bottom: 50px; right: -20px; }
+
+/* When Toggle is ON */
+body.hermes-mode .sticky-note {
+    opacity: 1;
+    transform: rotate(-2deg) scale(1) translateY(-10px);
+}
+
+/* --- REDACTED TEXT --- */
+.redacted {
+    background: #000; color: #000; padding: 0 2px;
+    cursor: crosshair; transition: 0.2s;
+}
+.redacted:hover { background: transparent; color: var(--accent); font-weight: bold; }
+
+/* --- EMAIL STYLES --- */
+.email-header-block {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+}
+.security-alert {
+    background: #ffebee;
+    padding: 15px;
+    border-left: 5px solid #d32f2f;
+    margin: 20px 0;
+}
+
+/* --- SLACK SIMULATION --- */
+.slack-window { border: 1px solid #e5e7eb; height: 500px; display: flex; background: white; }
+.slack-side { width: 70px; background: #3f0e40; display:flex; flex-direction:column; align-items:center; padding-top:20px; gap:15px; }
+.side-icon { width:40px; height:40px; background:rgba(255,255,255,0.2); border-radius:8px; }
+.slack-feed { flex: 1; padding: 20px; overflow-y: auto; background: #fff; }
+.msg { display: flex; gap: 12px; margin-bottom: 18px; opacity: 0; transform: translateX(-20px); transition: 0.4s; }
+.msg.show { opacity: 1; transform: translateX(0); }
+.avatar { width: 40px; height: 40px; background: #eee; border-radius: 4px; font-size: 1.5rem; display: grid; place-items: center; }
+.msg-body b { font-size: 0.95rem; }
+.msg-body div { font-size: 0.95rem; color: #374151; margin-top: 2px; }
+
+/* --- FORM STYLES --- */
+.form-title { text-align: center; text-decoration: underline; margin-bottom: 30px; }
+.risk-box { border: 2px solid red; padding: 15px; background: #fff0f0; margin-top: 20px; }
+
+/* --- REPORT SECTION --- */
+.report-modal {
+    margin-top: 100px; padding: 40px;
+    background: #111; color: #ddd;
+    border-top: 4px solid var(--primary);
+}
+.report-title { color: var(--primary); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #333; padding-bottom: 20px; margin-bottom: 30px; }
+.report-body p { margin-bottom: 20px; font-size: 1.1rem; line-height: 1.8; }
+
+/* --- CREATOR NOTE --- */
+.creator-note {
+    margin-top: 50px;
+    padding: 30px;
+    border: 1px dashed var(--gold);
+    background: rgba(245, 158, 11, 0.05);
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    color: #d1d5db;
+    line-height: 1.6;
+}
+.creator-note h3 {
+    color: var(--gold);
+    margin-top: 0;
+    border-bottom: 1px dashed var(--gold);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+/* --- STAMPS & MEMOS --- */
+.stamp {
+    border: 5px solid var(--accent); color: var(--accent);
+    font-weight: 900; font-size: 2rem; padding: 10px 20px;
+    text-transform: uppercase; position: absolute; bottom: 40px; right: 40px;
+    opacity: 0; transform: scale(2) rotate(-15deg); transition: 0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
+.stamp.visible { opacity: 0.8; transform: scale(1) rotate(-15deg); }
+.memo-font { font-family: Georgia, serif; }
+.memo-title { text-align: center; border-bottom: 4px double #000; margin-bottom: 20px; }
+
+/* --- TABLES & LISTS --- */
+.bribe-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.9rem; }
+.bribe-table th { text-align: left; background: #f3f4f6; padding: 10px; border: 1px solid #ddd; }
+.bribe-table td { padding: 10px; border: 1px solid #ddd; }
+
+/* --- MEDIA QUERIES --- */
+@media(max-width: 768px) {
+    .doc-content { padding: 1.5rem; }
+    .sticky-note { position: relative; width: 100%; margin: 10px 0; transform: none !important; top: auto !important; left: auto !important; right: auto !important; }
+}
