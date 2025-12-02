@@ -208,6 +208,29 @@ body.hermes-mode .sticky-note {
 .report-title { color: var(--primary); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #333; padding-bottom: 20px; margin-bottom: 30px; }
 .report-body p { margin-bottom: 20px; font-size: 1.1rem; line-height: 1.8; }
 
+/* --- DOWNLOAD BUTTON --- */
+.download-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 24px;
+    background: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    font-family: var(--font-mono);
+    font-weight: bold;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+}
+
+.download-btn:hover {
+    background: var(--primary);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+    transform: translateY(-2px);
+}
+
 /* --- CREATOR NOTE --- */
 .creator-note {
     margin-top: 50px;
